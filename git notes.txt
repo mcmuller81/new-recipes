@@ -1,0 +1,10 @@
+Git
+
+common commands:
+pwd - print working directory
+cd - change working directory
+cd.. - go up one directory
+ls/dir - list files in directory
+touch - create new empty file
+mkdir - create new empty folder
+

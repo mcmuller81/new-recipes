@@ -1,0 +1,76 @@
+<div id="inlineSingleSelectList<%<id>%>"></div>
+<button type="button" id="selectSingleSelect<%<id>%>" class="btn btn-default">Select Item</button>
+<button type="button" id="deselectSingleSelect<%<id>%>" class="btn btn-default">Deselect Item</button>
+
+
+js:
+<script>
+(function($) {
+  "use strict";
+  var module = $("#module<%<id>%>").claimsModuleData(),
+    moduleId = $("#module<%<id>%>").claimsModuleId(),
+    currentModule = _.find(claims.modules, ["id", moduleId]),
+    claimSpecific = currentModule.claimSpecific,
+    downForFinancials = currentModule.downForFinancials,
+    claim = window.claim;
+  if (downForFinancials === true && claims.financialStatus === "DOWN") {
+    var message = "This module is temporarily unavailable.";
+    $("#module<%<id>%>").html(message);
+    return;
+  }
+  if (claimSpecific === "1" || claimSpecific === "2") {
+    if (module.claim) {
+      claim = module.claim;
+    }
+    if (!claim) {
+      var message = "Claim is required.";
+      $("#module<%<id>%>").html(message);
+      return;
+    } else if (claimSpecific === "2" && claim.updateAccess !== "1") {
+      var message = "User has inquiry only access to " + claim.number + ".";
+      $("#module<%<id>%>").html(message);
+      return;
+    }
+  }
+
+var settings = {
+    callback: function(item) {console.log("Callback", item);},
+    add: function(item) {console.log("Add", item);},
+    remove: function(item) {console.log("Remove", item);},
+    columns: [
+        {"key": "name","text": "Name of Item","class": "dt-string"},
+        {"key": "description","text": "Item Description","class": "dt-string"}
+    ],
+    $container: $("#inlineSingleSelectList<%<id>%>"),
+    items: [
+        {"id": 1,"name": "Item 1","description": "Item 1 Description"},
+        {"id": 2,"name": "Item 2","description": "Item 2 Description"},
+        {"id": 3,"name": "Item 3","description": "Item 3 Description"},
+        {"id": 4,"name": "Item 4","description": "Item 4 Description"},
+        {"id": 5,"name": "Item 5","description": "Item 5 Description"},
+        {"id": 6,"name": "Item 6","description": "Item 6 Description"},
+        {"id": 7,"name": "Item 7","description": "Item 7 Description"},
+        {"id": 8,"name": "Item 8","description": "Item 8 Description"},
+        {"id": 9,"name": "Item 9","description": "Item 9 Description"},
+        {"id": 10,"name": "Item 10","description": "Item 10 Description"}
+    ],
+    key: "id",
+    listTitle: "Items",
+    selectedItems: 3,
+    singleSelect: true,
+    tableClass: "dt-noToggle"
+}
+var inlineSingleSelect;
+$(document).ready(function() {
+    inlineSingleSelect = claims.selectionList(settings);
+    $("#selectSingleSelect<%<id>%>").click(function() {
+        inlineSingleSelect.claimsSelected(5);
+    });
+    $("#deselectSingleSelect<%<id>%>").click(function() {
+        inlineSingleSelect.claimsSelected(false);
+    });
+});
+
+})(jQuery);
+//# sourceURL=https://claims.emcins.com/16B64_001_0.js
+</script>
